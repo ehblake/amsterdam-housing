@@ -95,6 +95,24 @@
     white-space: nowrap;
   }
 
+  /* Notes */
+  .listing-note {
+    font-size: 10px;
+    color: #f39c12;
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .listing-popup .popup-note {
+    font-size: 11px;
+    color: #e67e22;
+    font-style: italic;
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    background: #fef9e7;
+    border-radius: 4px;
+    border-left: 3px solid #f39c12;
+  }
+
   /* Grade selector on card */
   .grade-badge {
     display: inline-block;
@@ -342,7 +360,11 @@ document.querySelector('#sidebar-header p').textContent = `${listings.length} li
 // Grades: load from JSON file (shared), fall back to localStorage (local)
 const fileGrades = data.grades || {};
 const localGrades = JSON.parse(localStorage.getItem('housing-grades') || '{}');
-listings.forEach(l => { l.grade = fileGrades[l.id] || localGrades[l.id] || null; });
+const fileNotes = data.notes || {};
+listings.forEach(l => {
+  l.grade = fileGrades[l.id] || localGrades[l.id] || null;
+  l.note = fileNotes[l.id] || null;
+});
 
 map = L.map('map', { zoomControl: false }).setView([52.365, 4.866], 13);
 L.control.zoom({ position: 'topright' }).addTo(map);
@@ -376,6 +398,7 @@ listings.forEach(l => {
           <span>${l.bed} bed</span>
           ${l.grade ? `<span style="color:${GRADE_COLORS[l.grade]};font-weight:700">Grade ${l.grade}</span>` : ''}
         </div>
+        ${l.note ? `<div class="popup-note">${l.note}</div>` : ''}
         <a href="${URL_BASE}${l.lid}" target="_blank" rel="noopener">View listing &rarr;</a>
       </div>
     </div>`;
@@ -430,6 +453,7 @@ function renderList() {
           <span>${l.size}</span>
           <span>${l.bed} bed</span>
         </div>
+        ${l.note ? `<div class="listing-note">${l.note}</div>` : ''}
       </div>
       <div style="display:flex;align-items:center">
         <span class="listing-price">\u20AC${l.price.toLocaleString()}</span>
@@ -481,6 +505,7 @@ function updateMarkerColor(listing) {
           <span>${listing.bed} bed</span>
           ${listing.grade ? `<span style="color:${GRADE_COLORS[listing.grade]};font-weight:700">Grade ${listing.grade}</span>` : ''}
         </div>
+        ${listing.note ? `<div class="popup-note">${listing.note}</div>` : ''}
         <a href="${URL_BASE}${listing.lid}" target="_blank" rel="noopener">View listing &rarr;</a>
       </div>
     </div>`;
