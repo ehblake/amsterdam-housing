@@ -31,5 +31,5 @@
   {"name":"Olympiaschool", "type":"school", "lat":52.343118, "lng":4.8625082, "url":"https://www.google.com/maps/place/Olympiaschool/@52.343118,4.8625082,16z"},
   {"name":"Bataviaschool", "type":"school", "lat":52.3619025, "lng":4.936525, "url":"https://www.google.com/maps/place/Bataviaschool/@52.3619025,4.936525,17z"}
 ],
-"grades": {"1":"F", "23":"B", "3":"B", "4":"A", "13":"C", "20":"C", "5":"C"}
+"grades": {"1":"F", "23":"B", "3":"B", "4":"A", "13":"C", "20":"C", "5":"C", "2":"B", "6":"C", "9":"C", "7":"B", "8":"A"}
 }
