@@ -1,4 +1,5 @@
-[
+{
+"listings": [
   {"id":1, "title":"Roemer Visscherstraat", "price":3475, "lat":52.361550, "lng":4.878024, "bed":2, "size":"109 m\u00B2", "img":"f8d00f88-9497-4d42-9c52-ca289739080d.jpg", "lid":"9a24e7ee-010a-4334-8322-d72785435f29/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":2, "title":"Bilderdijkstraat 138-1", "price":2950, "lat":52.367886, "lng":4.871430, "bed":2, "size":"95 m\u00B2", "img":"16ff158d-1ce7-4ffb-8329-d3930008d04d.png", "lid":"d9182a0b-38b9-4a12-ad9a-a1be4451c3ca/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":3, "title":"Hestiastraat 71H", "price":2950, "lat":52.345692, "lng":4.856543, "bed":2, "size":"79 m\u00B2", "img":"abfe9c32-4d85-4576-9b0c-5e775be3b62e.jpg", "lid":"0d2f4dcc-108c-4fe4-87a1-28a4517f134b/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
@@ -24,4 +25,11 @@
   {"id":23, "title":"Overtoom 208-1", "price":3000, "lat":52.361979, "lng":4.871335, "bed":2, "size":"76 m\u00B2", "img":"c60d3fd4-7d71-4520-a942-cea9ce220053.jpg", "lid":"e7fae6c6-65c8-4017-98a6-709de6d0c1cd/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":24, "title":"Postjeskade", "price":2750, "lat":52.363536, "lng":4.855214, "bed":2, "size":"110 m\u00B2", "img":"a09bbf82-1e87-4ff1-952e-f97c512c5829.jpg", "lid":"e65a31cf-b8c9-4054-81a2-e320c3488b0e/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":25, "title":"Bilderdijkstraat", "price":2650, "lat":52.369876, "lng":4.870233, "bed":2, "size":"70 m\u00B2", "img":"da19d268-abec-4ab3-b98b-cbdae9c382e2.jpg", "lid":"c2404afa-fb0b-40e7-a7ba-bc59c233791e/6e67968f-ba9f-4158-af27-7e1c292f7ece"}
-]
+],
+"landmarks": [
+  {"name":"Kindcentrum de Vindplaats", "type":"school", "lat":52.3795978, "lng":4.8601271, "url":"https://www.google.com/maps/place/Kindcentrum+de+Vindplaats/@52.3795978,4.8601271,17z"},
+  {"name":"Olympiaschool", "type":"school", "lat":52.343118, "lng":4.8625082, "url":"https://www.google.com/maps/place/Olympiaschool/@52.343118,4.8625082,16z"},
+  {"name":"Bataviaschool", "type":"school", "lat":52.3619025, "lng":4.936525, "url":"https://www.google.com/maps/place/Bataviaschool/@52.3619025,4.936525,17z"}
+],
+"grades": {}
+}

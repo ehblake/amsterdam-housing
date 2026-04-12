@@ -242,6 +242,26 @@
     color: #666;
   }
 
+  /* Landmark markers */
+  .landmark-marker {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #f1c40f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .landmark-marker.school { border-color: #f1c40f; }
+
+  .landmark-popup h3 { font-size: 13px; font-weight: 700; color: #222; margin-bottom: 4px; }
+  .landmark-popup .landmark-type { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .landmark-popup a { color: #3498db; font-size: 12px; text-decoration: none; }
+  .landmark-popup a:hover { text-decoration: underline; }
+
   /* Scrollbar */
   #listing-list::-webkit-scrollbar { width: 6px; }
   #listing-list::-webkit-scrollbar-track { background: transparent; }
@@ -300,12 +320,16 @@ function saveGrades() {
 
 async function init() {
 const resp = await fetch('listings.json');
-listings = await resp.json();
+const data = await resp.json();
+listings = data.listings;
+const landmarks = data.landmarks || [];
 
 document.querySelector('#sidebar-header p').textContent = `${listings.length} listings from Expats on the Move`;
 
-const savedGrades = JSON.parse(localStorage.getItem('housing-grades') || '{}');
-listings.forEach(l => { l.grade = savedGrades[l.id] || null; });
+// Grades: load from JSON file (shared), fall back to localStorage (local)
+const fileGrades = data.grades || {};
+const localGrades = JSON.parse(localStorage.getItem('housing-grades') || '{}');
+listings.forEach(l => { l.grade = fileGrades[l.id] || localGrades[l.id] || null; });
 
 map = L.map('map', { zoomControl: false }).setView([52.365, 4.866], 13);
 L.control.zoom({ position: 'topright' }).addTo(map);
@@ -345,6 +369,21 @@ listings.forEach(l => {
 
   marker.bindPopup(popupContent, { maxWidth: 300, minWidth: 280 });
   markers[l.id] = marker;
+});
+
+// Render landmarks
+const LANDMARK_ICONS = { school: '\uD83C\uDFEB' };
+landmarks.forEach(lm => {
+  const emoji = LANDMARK_ICONS[lm.type] || '\u2B50';
+  const icon = L.divIcon({
+    className: 'custom-marker',
+    html: `<div class="landmark-marker ${lm.type}">${emoji}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -14]
+  });
+  const m = L.marker([lm.lat, lm.lng], { icon, zIndexOffset: -100 }).addTo(map);
+  m.bindPopup(`<div class="landmark-popup"><h3>${lm.name}</h3><div class="landmark-type">${lm.type}</div><a href="${lm.url}" target="_blank">View on Google Maps &rarr;</a></div>`, { maxWidth: 250 });
 });
 
 // Fit bounds (after layout settles)
