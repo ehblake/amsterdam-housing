@@ -23,13 +23,14 @@
   {"id":21, "title":"Haarlemmerweg 267B", "price":2500, "lat":52.385112, "lng":4.868483, "bed":2, "size":"86 m\u00B2", "img":"9d01477d-c37a-4b50-ac50-a06d6a20de90.jpg", "lid":"08715ffc-eb3c-4072-9a60-c5f1d8aa608e/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":22, "title":"Overtoom 208-1", "price":3000, "lat":52.361979, "lng":4.871335, "bed":2, "size":"76 m\u00B2", "img":"c60d3fd4-7d71-4520-a942-cea9ce220053.jpg", "lid":"e7fae6c6-65c8-4017-98a6-709de6d0c1cd/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":23, "title":"Postjeskade", "price":2750, "lat":52.363536, "lng":4.855214, "bed":2, "size":"110 m\u00B2", "img":"a09bbf82-1e87-4ff1-952e-f97c512c5829.jpg", "lid":"e65a31cf-b8c9-4054-81a2-e320c3488b0e/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
-  {"id":24, "title":"Bilderdijkstraat", "price":2650, "lat":52.369876, "lng":4.870233, "bed":2, "size":"70 m\u00B2", "img":"da19d268-abec-4ab3-b98b-cbdae9c382e2.jpg", "lid":"c2404afa-fb0b-40e7-a7ba-bc59c233791e/6e67968f-ba9f-4158-af27-7e1c292f7ece"}
+  {"id":24, "title":"Bilderdijkstraat", "price":2650, "lat":52.369876, "lng":4.870233, "bed":2, "size":"70 m\u00B2", "img":"da19d268-abec-4ab3-b98b-cbdae9c382e2.jpg", "lid":"c2404afa-fb0b-40e7-a7ba-bc59c233791e/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
+  {"id":25, "title":"PC Hooftstraat 55-2", "price":3500, "lat":52.3586, "lng":4.8791, "bed":2, "size":"92 m\u00B2", "img":"https://cloud.funda.nl/valentina_media/227/086/839.jpg", "url":"https://www.funda.nl/detail/huur/amsterdam/appartement-pieter-cornelisz-hooftstraat-55-2/89767048/", "source":"funda"}
 ],
 "landmarks": [
   {"name":"Kindcentrum de Vindplaats", "type":"school", "lat":52.3795978, "lng":4.8601271, "url":"https://www.google.com/maps/place/Kindcentrum+de+Vindplaats/@52.3795978,4.8601271,17z"},
   {"name":"Olympiaschool", "type":"school", "lat":52.343118, "lng":4.8625082, "url":"https://www.google.com/maps/place/Olympiaschool/@52.343118,4.8625082,16z"},
   {"name":"Bataviaschool", "type":"school", "lat":52.3619025, "lng":4.936525, "url":"https://www.google.com/maps/place/Bataviaschool/@52.3619025,4.936525,17z"}
 ],
-"grades": {"1":"F", "2":"B", "3":"B", "4":"A", "5":"C", "6":"C", "7":"A", "8":"A", "9":"C", "10":"F", "11":"B", "12":"C", "13":"C", "14":"A", "15":"C", "16":"B", "17":"C", "18":"C", "19":"C", "20":"C", "21":"C", "22":"B", "23":"C", "24":"C"},
+"grades": {"1":"F", "2":"B", "3":"B", "4":"A", "5":"C", "6":"C", "7":"A", "8":"A", "9":"C", "10":"F", "11":"B", "12":"C", "13":"C", "14":"A", "15":"C", "16":"B", "17":"C", "18":"C", "19":"C", "20":"C", "21":"C", "22":"B", "23":"C", "24":"C", "25":"A"},
 "notes": {"15": "Suboptimal: Fully furnished", "18": "Second bedroom is tiny", "21": "Only 4 photos", "23": "Strange photos", "24": "Second bedroom is tiny"}
 }

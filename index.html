@@ -95,6 +95,40 @@
     white-space: nowrap;
   }
 
+  /* External listings */
+  .marker-pin.external {
+    opacity: 0.7;
+    border: 2px dashed rgba(255,255,255,0.4);
+  }
+  .listing-card.external {
+    opacity: 0.65;
+    border-left: 3px solid #555;
+  }
+  .listing-card.external:hover { opacity: 1; }
+  .listing-card.external .listing-price { color: #999; }
+  .source-tag {
+    font-size: 9px;
+    background: #555;
+    color: #ccc;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+  .popup-source {
+    font-size: 9px;
+    background: #eee;
+    color: #888;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+
   /* Notes */
   .listing-note {
     font-size: 10px;
@@ -356,7 +390,9 @@ const data = await resp.json();
 listings = data.listings;
 const landmarks = data.landmarks || [];
 
-document.querySelector('#sidebar-header p').textContent = `${listings.length} listings from Expats on the Move`;
+const agentCount = listings.filter(l => !l.source).length;
+const extCount = listings.filter(l => l.source).length;
+document.querySelector('#sidebar-header p').textContent = `${agentCount} agent + ${extCount} other listing${extCount !== 1 ? 's' : ''}`;
 
 // Grades: load from JSON file (shared), fall back to localStorage (local)
 const fileGrades = data.grades || {};
@@ -375,12 +411,21 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   maxZoom: 19
 }).addTo(map);
 
+// Helpers for external vs agent listings
+function imgSrc(l) { return l.source ? l.img : IMG_BASE + l.img; }
+function listingUrl(l) { return l.source ? l.url : URL_BASE + l.lid; }
+function markerColor(l) {
+  if (l.source) return l.grade ? GRADE_COLORS[l.grade] : '#888';
+  return l.grade ? GRADE_COLORS[l.grade] : DEFAULT_COLOR;
+}
+
 // Create markers
 listings.forEach(l => {
-  const color = l.grade ? GRADE_COLORS[l.grade] : DEFAULT_COLOR;
+  const color = markerColor(l);
+  const ext = l.source ? ' external' : '';
   const icon = L.divIcon({
     className: 'custom-marker',
-    html: `<div class="marker-pin" style="background:${color}" data-id="${l.id}"><span class="marker-label">${l.id}</span></div>`,
+    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${l.id}"><span class="marker-label">${l.id}</span></div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
@@ -388,11 +433,12 @@ listings.forEach(l => {
 
   const marker = L.marker([l.lat, l.lng], { icon }).addTo(map);
 
+  const sourceTag = l.source ? `<span class="popup-source">${l.source}</span>` : '';
   const popupContent = `
     <div class="listing-popup">
-      <img src="${IMG_BASE}${l.img}" alt="${l.title}" loading="lazy" onerror="this.style.background='#ccc';this.style.minHeight='160px'"/>
+      <img src="${imgSrc(l)}" alt="${l.title}" loading="lazy" onerror="this.style.background='#ccc';this.style.minHeight='160px'"/>
       <div class="popup-body">
-        <h3>${l.title}</h3>
+        <h3>${l.title} ${sourceTag}</h3>
         <div class="popup-price">\u20AC ${l.price.toLocaleString()} /mo</div>
         <div class="popup-details">
           <span>${l.size}</span>
@@ -400,7 +446,7 @@ listings.forEach(l => {
           ${l.grade ? `<span style="color:${GRADE_COLORS[l.grade]};font-weight:700">Grade ${l.grade}</span>` : ''}
         </div>
         ${l.note ? `<div class="popup-note">${l.note}</div>` : ''}
-        <a href="${URL_BASE}${l.lid}" target="_blank" rel="noopener">View listing &rarr;</a>
+        <a href="${listingUrl(l)}" target="_blank" rel="noopener">View listing &rarr;</a>
       </div>
     </div>`;
 
@@ -449,13 +495,14 @@ function renderList() {
     const show = isVisible(l);
 
     const card = document.createElement('div');
-    card.className = `listing-card${show ? '' : ' hidden'}`;
+    card.className = `listing-card${show ? '' : ' hidden'}${l.source ? ' external' : ''}`;
     card.dataset.id = l.id;
 
     const gradeClass = l.grade ? `grade-${l.grade}` : 'ungraded';
+    const srcTag = l.source ? `<span class="source-tag">${l.source}</span>` : '';
     card.innerHTML = `
       <div class="listing-info">
-        <h3>${l.id}. ${l.title}</h3>
+        <h3>${l.id}. ${l.title}${srcTag}</h3>
         <div class="listing-meta">
           <span>${l.size}</span>
           <span>${l.bed} bed</span>
@@ -490,22 +537,23 @@ function updateStats(visible) {
 }
 
 function updateMarkerColor(listing) {
-  const color = listing.grade ? GRADE_COLORS[listing.grade] : DEFAULT_COLOR;
+  const color = markerColor(listing);
+  const ext = listing.source ? ' external' : '';
   const icon = L.divIcon({
     className: 'custom-marker',
-    html: `<div class="marker-pin" style="background:${color}" data-id="${listing.id}"><span class="marker-label">${listing.id}</span></div>`,
+    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${listing.id}"><span class="marker-label">${listing.id}</span></div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
   });
   markers[listing.id].setIcon(icon);
 
-  // Update popup content too
+  const sourceTag = listing.source ? `<span class="popup-source">${listing.source}</span>` : '';
   const popupContent = `
     <div class="listing-popup">
-      <img src="${IMG_BASE}${listing.img}" alt="${listing.title}" loading="lazy" onerror="this.style.background='#ccc';this.style.minHeight='160px'"/>
+      <img src="${imgSrc(listing)}" alt="${listing.title}" loading="lazy" onerror="this.style.background='#ccc';this.style.minHeight='160px'"/>
       <div class="popup-body">
-        <h3>${listing.title}</h3>
+        <h3>${listing.title} ${sourceTag}</h3>
         <div class="popup-price">\u20AC ${listing.price.toLocaleString()} /mo</div>
         <div class="popup-details">
           <span>${listing.size}</span>
@@ -513,7 +561,7 @@ function updateMarkerColor(listing) {
           ${listing.grade ? `<span style="color:${GRADE_COLORS[listing.grade]};font-weight:700">Grade ${listing.grade}</span>` : ''}
         </div>
         ${listing.note ? `<div class="popup-note">${listing.note}</div>` : ''}
-        <a href="${URL_BASE}${listing.lid}" target="_blank" rel="noopener">View listing &rarr;</a>
+        <a href="${listingUrl(listing)}" target="_blank" rel="noopener">View listing &rarr;</a>
       </div>
     </div>`;
   markers[listing.id].setPopupContent(popupContent);
