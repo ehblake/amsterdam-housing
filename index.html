@@ -338,7 +338,8 @@ const IMG_BASE = 'https://realmax-bucket.s3.amazonaws.com/Copied%20Listing%20Dat
 const URL_BASE = 'https://realmex.appsourcee.com/listings-public/';
 
 let listings = [];
-let map, markers = {}, listEl, activeFilter = 'all';
+let map, markers = {}, listEl;
+let activeFilters = new Set(['all']);
 
 const GRADE_COLORS = { A:'#2ecc71', B:'#3498db', C:'#f39c12', D:'#e67e22', F:'#e74c3c' };
 const DEFAULT_COLOR = '#e94560';
@@ -429,6 +430,14 @@ setTimeout(() => {
   map.fitBounds(group.getBounds().pad(0.1));
 }, 100);
 
+// Filter helper
+function isVisible(l) {
+  if (activeFilters.has('all')) return true;
+  if (activeFilters.has('ungraded') && !l.grade) return true;
+  if (l.grade && activeFilters.has(l.grade)) return true;
+  return false;
+}
+
 // Build sidebar listing cards
 listEl = document.getElementById('listing-list');
 
@@ -437,9 +446,7 @@ function renderList() {
   let visible = 0;
 
   listings.forEach(l => {
-    const show = activeFilter === 'all' ||
-                 (activeFilter === 'ungraded' && !l.grade) ||
-                 l.grade === activeFilter;
+    const show = isVisible(l);
 
     const card = document.createElement('div');
     card.className = `listing-card${show ? '' : ' hidden'}`;
@@ -546,25 +553,41 @@ document.addEventListener('click', (e) => {
   dropdown.classList.remove('show');
 });
 
-// Filter buttons
+// Filter buttons — multi-select with toggle
+function applyFilters() {
+  renderList();
+  listings.forEach(l => {
+    if (isVisible(l)) {
+      markers[l.id].addTo(map);
+    } else {
+      map.removeLayer(markers[l.id]);
+    }
+  });
+  // Update button states
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', activeFilters.has(b.dataset.grade));
+  });
+}
+
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeFilter = btn.dataset.grade;
-    renderList();
-
-    // Show/hide markers
-    listings.forEach(l => {
-      const show = activeFilter === 'all' ||
-                   (activeFilter === 'ungraded' && !l.grade) ||
-                   l.grade === activeFilter;
-      if (show) {
-        markers[l.id].addTo(map);
+    const grade = btn.dataset.grade;
+    if (grade === 'all') {
+      // "All" resets to showing everything
+      activeFilters = new Set(['all']);
+    } else {
+      // Remove "all" when picking specific grades
+      activeFilters.delete('all');
+      // Toggle this grade
+      if (activeFilters.has(grade)) {
+        activeFilters.delete(grade);
       } else {
-        map.removeLayer(markers[l.id]);
+        activeFilters.add(grade);
       }
-    });
+      // If nothing selected, fall back to "all"
+      if (activeFilters.size === 0) activeFilters = new Set(['all']);
+    }
+    applyFilters();
   });
 });
 
