@@ -97,15 +97,15 @@
 
   /* External listings */
   .marker-pin.external {
-    opacity: 0.7;
-    border: 2px dashed rgba(255,255,255,0.4);
+    opacity: 0.75;
+    border: 2px dashed rgba(255,255,255,0.3);
   }
   .listing-card.external {
-    opacity: 0.65;
-    border-left: 3px solid #555;
+    opacity: 0.6;
+    border-left: 3px solid #9b59b6;
   }
   .listing-card.external:hover { opacity: 1; }
-  .listing-card.external .listing-price { color: #999; }
+  .listing-card.external .listing-price { color: #9b59b6; }
   .source-tag {
     font-size: 9px;
     background: #555;
@@ -414,8 +414,9 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 // Helpers for external vs agent listings
 function imgSrc(l) { return l.source ? l.img : IMG_BASE + l.img; }
 function listingUrl(l) { return l.source ? l.url : URL_BASE + l.lid; }
+const EXTERNAL_COLOR = '#9b59b6';
 function markerColor(l) {
-  if (l.source) return l.grade ? GRADE_COLORS[l.grade] : '#888';
+  if (l.source) return l.grade ? GRADE_COLORS[l.grade] : EXTERNAL_COLOR;
   return l.grade ? GRADE_COLORS[l.grade] : DEFAULT_COLOR;
 }
 
@@ -423,9 +424,10 @@ function markerColor(l) {
 listings.forEach(l => {
   const color = markerColor(l);
   const ext = l.source ? ' external' : '';
+  const pinLabel = l.source ? '\u2605' : l.id;
   const icon = L.divIcon({
     className: 'custom-marker',
-    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${l.id}"><span class="marker-label">${l.id}</span></div>`,
+    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${l.id}"><span class="marker-label">${pinLabel}</span></div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
@@ -491,7 +493,14 @@ function renderList() {
   listEl.innerHTML = '';
   let visible = 0;
 
-  listings.forEach(l => {
+  // Agent listings first, then external
+  const sorted = [...listings].sort((a, b) => {
+    if (a.source && !b.source) return 1;
+    if (!a.source && b.source) return -1;
+    return 0;
+  });
+
+  sorted.forEach(l => {
     const show = isVisible(l);
 
     const card = document.createElement('div');
@@ -500,9 +509,10 @@ function renderList() {
 
     const gradeClass = l.grade ? `grade-${l.grade}` : 'ungraded';
     const srcTag = l.source ? `<span class="source-tag">${l.source}</span>` : '';
+    const label = l.source ? l.title : `${l.id}. ${l.title}`;
     card.innerHTML = `
       <div class="listing-info">
-        <h3>${l.id}. ${l.title}${srcTag}</h3>
+        <h3>${label}${srcTag}</h3>
         <div class="listing-meta">
           <span>${l.size}</span>
           <span>${l.bed} bed</span>
@@ -539,9 +549,10 @@ function updateStats(visible) {
 function updateMarkerColor(listing) {
   const color = markerColor(listing);
   const ext = listing.source ? ' external' : '';
+  const pinLabel = listing.source ? '\u2605' : listing.id;
   const icon = L.divIcon({
     className: 'custom-marker',
-    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${listing.id}"><span class="marker-label">${listing.id}</span></div>`,
+    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${listing.id}"><span class="marker-label">${pinLabel}</span></div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
