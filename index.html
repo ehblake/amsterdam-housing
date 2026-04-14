@@ -198,15 +198,15 @@
 
   /* Custom markers */
   .marker-pin {
-    width: 32px;
-    height: 32px;
+    width: 38px;
+    height: 38px;
     border-radius: 50% 50% 50% 0;
     background: #e94560;
     position: absolute;
     transform: rotate(-45deg);
     left: 50%;
     top: 50%;
-    margin: -16px 0 0 -16px;
+    margin: -19px 0 0 -19px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -216,16 +216,16 @@
   }
   .marker-pin .marker-label {
     transform: rotate(45deg);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
     color: #fff;
     text-shadow: 0 0 2px rgba(0,0,0,0.3);
   }
   .marker-pin.highlighted {
     background: #fff;
-    width: 38px;
-    height: 38px;
-    margin: -19px 0 0 -19px;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
     z-index: 999 !important;
   }
   .marker-pin.highlighted .marker-label { color: #e94560; }
@@ -437,9 +437,9 @@ listings.forEach(l => {
   const icon = L.divIcon({
     className: 'custom-marker',
     html: `<div class="marker-pin${ext}" style="${pinStyle(color)}" data-id="${l.id}"><span class="marker-label">${pinLabel}</span></div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
+    iconSize: [38, 38],
+    iconAnchor: [19, 38],
+    popupAnchor: [0, -38]
   });
 
   const marker = L.marker([l.lat, l.lng], { icon }).addTo(map);
@@ -562,9 +562,9 @@ function updateMarkerColor(listing) {
   const icon = L.divIcon({
     className: 'custom-marker',
     html: `<div class="marker-pin${ext}" style="${pinStyle(color)}" data-id="${listing.id}"><span class="marker-label">${pinLabel}</span></div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
+    iconSize: [38, 38],
+    iconAnchor: [19, 38],
+    popupAnchor: [0, -38]
   });
   markers[listing.id].setIcon(icon);
 
