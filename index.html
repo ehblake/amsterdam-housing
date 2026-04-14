@@ -162,11 +162,11 @@
     flex-shrink: 0;
   }
   .grade-badge.ungraded { background: #333; color: #666; border: 1px dashed #555; }
-  .grade-A { background: #2ecc71; color: #fff; }
-  .grade-B { background: #3498db; color: #fff; }
-  .grade-C { background: #f39c12; color: #fff; }
-  .grade-D { background: #e67e22; color: #fff; }
-  .grade-F { background: #e74c3c; color: #fff; }
+  .grade-A { background: #68a55f; color: #fff; }
+  .grade-B { background: #cce368; color: #444; }
+  .grade-C { background: #e3cf68; color: #444; }
+  .grade-D { background: #e3ae64; color: #444; }
+  .grade-F { background: #e37564; color: #fff; }
 
   /* Grade dropdown */
   .grade-dropdown {
@@ -218,6 +218,7 @@
     font-size: 10px;
     font-weight: 700;
     color: #fff;
+    text-shadow: 0 0 3px rgba(0,0,0,0.3);
   }
   .marker-pin.highlighted {
     background: #fff;
@@ -375,8 +376,8 @@ let listings = [];
 let map, markers = {}, listEl;
 let activeFilters = new Set(['all']);
 
-const GRADE_COLORS = { A:'#2ecc71', B:'#3498db', C:'#f39c12', D:'#e67e22', F:'#e74c3c' };
-const DEFAULT_COLOR = '#aaa';
+const GRADE_COLORS = { A:'#68a55f', B:'#cce368', C:'#e3cf68', D:'#e3ae64', F:'#e37564' };
+const DEFAULT_COLOR = '#adadad';
 
 function saveGrades() {
   const g = {};
@@ -406,9 +407,9 @@ listings.forEach(l => {
 map = L.map('map', { zoomControl: false }).setView([52.365, 4.866], 13);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OSM &copy; CARTO',
-  maxZoom: 19
+L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OSM &copy; Stadia Maps',
+  maxZoom: 20
 }).addTo(map);
 
 // Helpers for external vs agent listings
