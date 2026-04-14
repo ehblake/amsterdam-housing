@@ -31,7 +31,8 @@
 "landmarks": [
   {"name":"Kindcentrum de Vindplaats", "type":"school", "lat":52.3795978, "lng":4.8601271, "url":"https://www.google.com/maps/place/Kindcentrum+de+Vindplaats/@52.3795978,4.8601271,17z"},
   {"name":"Olympiaschool", "type":"school", "lat":52.343118, "lng":4.8625082, "url":"https://www.google.com/maps/place/Olympiaschool/@52.343118,4.8625082,16z"},
-  {"name":"Bataviaschool", "type":"school", "lat":52.3619025, "lng":4.936525, "url":"https://www.google.com/maps/place/Bataviaschool/@52.3619025,4.936525,17z"}
+  {"name":"Bataviaschool", "type":"school", "lat":52.3619025, "lng":4.936525, "url":"https://www.google.com/maps/place/Bataviaschool/@52.3619025,4.936525,17z"},
+  {"name":"Basisschool het Museumkwartier", "type":"school", "lat":52.3589635, "lng":4.8797655, "url":"https://www.google.com/maps/place/Basisschool+het+Museumkwartier/@52.3589635,4.8797655,17z"}
 ],
 "grades": {"1":"F", "2":"B", "3":"B", "4":"A", "5":"C", "6":"C", "7":"A", "8":"A", "9":"C", "10":"F", "11":"B", "12":"C", "13":"C", "14":"A", "15":"C", "16":"B", "17":"C", "18":"C", "19":"C", "20":"C", "21":"C", "22":"B", "23":"C", "24":"C", "25":"C", "26":"C", "f1":"A"},
 "notes": {"15": "Suboptimal: Fully furnished", "18": "Second bedroom is tiny", "21": "Only 4 photos", "23": "Strange photos", "24": "Second bedroom is tiny"}

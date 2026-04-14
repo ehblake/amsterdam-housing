@@ -162,11 +162,11 @@
     flex-shrink: 0;
   }
   .grade-badge.ungraded { background: #333; color: #666; border: 1px dashed #555; }
-  .grade-A { background: #68a55f; color: #fff; }
-  .grade-B { background: #cce368; color: #444; }
-  .grade-C { background: #e3cf68; color: #444; }
-  .grade-D { background: #e3ae64; color: #444; }
-  .grade-F { background: #e37564; color: #fff; }
+  .grade-A { background: rgba(79,152,68,0.75); border: 1px solid #4F9844; color: #fff; }
+  .grade-B { background: rgba(62,133,153,0.75); border: 1px solid #3E8599; color: #fff; }
+  .grade-C { background: rgba(181,159,47,0.75); border: 1px solid #B59F2F; color: #fff; }
+  .grade-D { background: rgba(187,119,24,0.75); border: 1px solid #BB7718; color: #fff; }
+  .grade-F { background: rgba(169,58,41,0.75); border: 1px solid #A93A29; color: #fff; }
 
   /* Grade dropdown */
   .grade-dropdown {
@@ -210,15 +210,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     transition: all 0.15s;
+    opacity: 1;
   }
   .marker-pin .marker-label {
     transform: rotate(45deg);
     font-size: 10px;
     font-weight: 700;
     color: #fff;
-    text-shadow: 0 0 3px rgba(0,0,0,0.3);
+    text-shadow: 0 0 2px rgba(0,0,0,0.3);
   }
   .marker-pin.highlighted {
     background: #fff;
@@ -376,8 +377,8 @@ let listings = [];
 let map, markers = {}, listEl;
 let activeFilters = new Set(['all']);
 
-const GRADE_COLORS = { A:'#68a55f', B:'#cce368', C:'#e3cf68', D:'#e3ae64', F:'#e37564' };
-const DEFAULT_COLOR = '#adadad';
+const GRADE_COLORS = { A:'#4F9844', B:'#3E8599', C:'#B59F2F', D:'#BB7718', F:'#A93A29' };
+const DEFAULT_COLOR = '#A3A3A3';
 
 function saveGrades() {
   const g = {};
@@ -412,9 +413,16 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   maxZoom: 20
 }).addTo(map);
 
-// Helpers for external vs agent listings
+// Helpers
 function imgSrc(l) { return l.source ? l.img : IMG_BASE + l.img; }
 function listingUrl(l) { return l.source ? l.url : URL_BASE + l.lid; }
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+function pinStyle(color) {
+  return `background:${hexToRgba(color,0.75)};border:1px solid ${color}`;
+}
 const EXTERNAL_COLOR = '#9b59b6';
 function markerColor(l) {
   if (l.source) return l.grade ? GRADE_COLORS[l.grade] : EXTERNAL_COLOR;
@@ -428,7 +436,7 @@ listings.forEach(l => {
   const pinLabel = l.source ? '\u2605' : l.id;
   const icon = L.divIcon({
     className: 'custom-marker',
-    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${l.id}"><span class="marker-label">${pinLabel}</span></div>`,
+    html: `<div class="marker-pin${ext}" style="${pinStyle(color)}" data-id="${l.id}"><span class="marker-label">${pinLabel}</span></div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
@@ -553,7 +561,7 @@ function updateMarkerColor(listing) {
   const pinLabel = listing.source ? '\u2605' : listing.id;
   const icon = L.divIcon({
     className: 'custom-marker',
-    html: `<div class="marker-pin${ext}" style="background:${color}" data-id="${listing.id}"><span class="marker-label">${pinLabel}</span></div>`,
+    html: `<div class="marker-pin${ext}" style="${pinStyle(color)}" data-id="${listing.id}"><span class="marker-label">${pinLabel}</span></div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
