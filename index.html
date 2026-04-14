@@ -407,8 +407,8 @@ listings.forEach(l => {
 map = L.map('map', { zoomControl: false }).setView([52.365, 4.866], 13);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
-L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OSM &copy; Stadia Maps',
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OSM &copy; CARTO',
   maxZoom: 20
 }).addTo(map);
 
