@@ -25,6 +25,7 @@
   {"id":23, "title":"Postjeskade", "price":2750, "lat":52.363536, "lng":4.855214, "bed":2, "size":"110 m\u00B2", "img":"a09bbf82-1e87-4ff1-952e-f97c512c5829.jpg", "lid":"e65a31cf-b8c9-4054-81a2-e320c3488b0e/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":24, "title":"Bilderdijkstraat", "price":2650, "lat":52.369876, "lng":4.870233, "bed":2, "size":"70 m\u00B2", "img":"da19d268-abec-4ab3-b98b-cbdae9c382e2.jpg", "lid":"c2404afa-fb0b-40e7-a7ba-bc59c233791e/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":25, "title":"Admiraal De Ruijterweg", "price":2650, "lat":52.373629, "lng":4.859102, "bed":2, "size":"80 m\u00B2", "img":"8f122779-b7a6-45fb-ad06-bff811a8b674.jpg", "lid":"60da3218-6ba4-4992-9448-46f8b2194c2b/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
+  {"id":26, "title":"Johannes Verhulststraat", "price":2850, "lat":52.354975, "lng":4.874658, "bed":2, "size":"76 m\u00B2", "img":"0bad2988-eb82-4f4a-aa99-bf87a9f44036.jpg", "lid":"985be0c1-394a-4b55-9a99-10211c8016fb/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":"f1", "title":"PC Hooftstraat 55-2", "price":3500, "lat":52.3586, "lng":4.8791, "bed":2, "size":"92 m\u00B2", "img":"https://cloud.funda.nl/valentina_media/227/086/839.jpg", "url":"https://www.funda.nl/detail/huur/amsterdam/appartement-pieter-cornelisz-hooftstraat-55-2/89767048/", "source":"funda"}
 ],
 "landmarks": [
