@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Amsterdam Housing Map</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
@@ -333,12 +333,122 @@
   #listing-list::-webkit-scrollbar { width: 6px; }
   #listing-list::-webkit-scrollbar-track { background: transparent; }
   #listing-list::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+  /* Drag handle (mobile only, hidden on desktop) */
+  #sheet-handle { display: none; }
+
+  /* ---------- MOBILE: bottom sheet layout ---------- */
+  @media (max-width: 768px) {
+    html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+
+    #app { display: block; height: 100vh; height: 100dvh; position: relative; }
+
+    /* Map fills the whole viewport, sits behind the sheet */
+    #map-container {
+      position: absolute;
+      inset: 0;
+      height: 100vh;
+      height: 100dvh;
+      z-index: 1;
+    }
+
+    /* Sidebar becomes a bottom sheet */
+    #sidebar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      height: 45vh;
+      height: 45dvh;
+      border-right: none;
+      border-top: 1px solid #0f3460;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -6px 24px rgba(0,0,0,0.35);
+      z-index: 1100;
+      transition: height 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    #sidebar.dragging { transition: none; }
+    #sidebar.peek { height: 148px; }
+    #sidebar.full { height: 88vh; height: 88dvh; }
+
+    #sheet-handle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 0 4px;
+      cursor: grab;
+      touch-action: none;
+      flex-shrink: 0;
+    }
+    #sheet-handle::before {
+      content: "";
+      display: block;
+      width: 44px;
+      height: 4px;
+      background: #4a5578;
+      border-radius: 2px;
+    }
+    #sidebar.dragging #sheet-handle { cursor: grabbing; }
+
+    #sidebar-header {
+      padding: 4px 18px 8px;
+      border-bottom: 1px solid #0f3460;
+    }
+    #sidebar-header h1 { font-size: 15px; }
+    #sidebar-header p { font-size: 11px; }
+
+    /* Filter row: horizontally scrollable, no wrap */
+    #filters {
+      padding: 10px 14px;
+      gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #filters::-webkit-scrollbar { display: none; }
+    .filter-btn { flex-shrink: 0; }
+
+    #listing-list {
+      padding: 8px 10px;
+      /* Native-feeling scroll in sheet */
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    #stats {
+      display: none; /* save space on mobile */
+    }
+
+    /* Slightly smaller cards */
+    .listing-card { padding: 10px; }
+    .listing-info h3 { font-size: 13px; }
+    .listing-price { font-size: 14px; }
+
+    /* Popup sized for phone */
+    .listing-popup { width: min(280px, 72vw); }
+    .listing-popup img { height: 140px; }
+    .leaflet-popup-content { min-width: 0; width: min(280px, 72vw) !important; }
+    .leaflet-popup { margin-bottom: 8px; }
+
+    /* Keep Leaflet zoom control out of the sheet's way */
+    .leaflet-top.leaflet-right { top: 8px; }
+    .leaflet-control-zoom { box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+
+    /* Grade dropdown: anchor near where tapped, but cap to viewport */
+    .grade-dropdown { max-width: calc(100vw - 16px); }
+  }
 </style>
 </head>
 <body>
 
 <div id="app">
   <div id="sidebar">
+    <div id="sheet-handle" aria-label="Drag to resize list" role="button" tabindex="0"></div>
     <div id="sidebar-header">
       <h1>Amsterdam Rentals</h1>
       <p>25 listings from Expats on the Move</p>
@@ -461,7 +571,12 @@ listings.forEach(l => {
       </div>
     </div>`;
 
-  marker.bindPopup(popupContent, { maxWidth: 300, minWidth: 280 });
+  marker.bindPopup(popupContent, {
+    maxWidth: 300,
+    minWidth: 280,
+    autoPanPaddingTopLeft: [10, 10],
+    autoPanPaddingBottomRight: [10, 170]
+  });
   markers[l.id] = marker;
 });
 
@@ -675,6 +790,98 @@ listEl.addEventListener('mouseout', (e) => {
     const pin = markers[id]?._icon?.querySelector('.marker-pin');
     if (pin) pin.classList.remove('highlighted');
   }
+});
+
+// ---------- Mobile bottom sheet ----------
+const sidebar = document.getElementById('sidebar');
+const handle = document.getElementById('sheet-handle');
+const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+// States: 'peek' (just handle + filters), default (half), 'full' (near-full)
+function setSheetState(state) {
+  sidebar.classList.remove('peek', 'full');
+  if (state === 'peek') sidebar.classList.add('peek');
+  else if (state === 'full') sidebar.classList.add('full');
+  // trigger map resize so pins stay accurate
+  setTimeout(() => map.invalidateSize(), 300);
+}
+function currentSheetState() {
+  if (sidebar.classList.contains('peek')) return 'peek';
+  if (sidebar.classList.contains('full')) return 'full';
+  return 'half';
+}
+function cycleSheet() {
+  const order = ['peek', 'half', 'full'];
+  const i = order.indexOf(currentSheetState());
+  setSheetState(order[(i + 1) % order.length]);
+}
+
+// Tap/click handle to cycle states (mobile only — desktop handle is display:none)
+handle.addEventListener('click', (e) => {
+  if (!isMobile()) return;
+  if (handle.dataset.dragged === '1') {
+    handle.dataset.dragged = '0';
+    return;
+  }
+  cycleSheet();
+});
+handle.addEventListener('keydown', (e) => {
+  if (!isMobile()) return;
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cycleSheet(); }
+});
+
+// Drag to resize
+let dragStartY = null, dragStartH = null;
+function onDragStart(clientY) {
+  if (!isMobile()) return;
+  dragStartY = clientY;
+  dragStartH = sidebar.getBoundingClientRect().height;
+  sidebar.classList.add('dragging');
+  handle.dataset.dragged = '0';
+}
+function onDragMove(clientY) {
+  if (dragStartY == null) return;
+  const dy = dragStartY - clientY;
+  const vh = window.innerHeight;
+  let h = Math.max(80, Math.min(vh * 0.95, dragStartH + dy));
+  sidebar.style.height = h + 'px';
+  if (Math.abs(dy) > 4) handle.dataset.dragged = '1';
+}
+function onDragEnd() {
+  if (dragStartY == null) return;
+  const h = sidebar.getBoundingClientRect().height;
+  const vh = window.innerHeight;
+  // Snap to nearest state
+  sidebar.style.height = '';
+  sidebar.classList.remove('dragging');
+  if (h < vh * 0.22) setSheetState('peek');
+  else if (h > vh * 0.65) setSheetState('full');
+  else setSheetState('half');
+  dragStartY = null;
+}
+handle.addEventListener('touchstart', (e) => onDragStart(e.touches[0].clientY), { passive: true });
+handle.addEventListener('touchmove', (e) => onDragMove(e.touches[0].clientY), { passive: true });
+handle.addEventListener('touchend', onDragEnd);
+handle.addEventListener('mousedown', (e) => { onDragStart(e.clientY); e.preventDefault(); });
+window.addEventListener('mousemove', (e) => onDragMove(e.clientY));
+window.addEventListener('mouseup', onDragEnd);
+
+// When a card is tapped on mobile, collapse sheet so the map + pin are visible
+listEl.addEventListener('click', (e) => {
+  if (!isMobile()) return;
+  if (!e.target.closest('.listing-card')) return;
+  if (e.target.closest('.grade-badge') || e.target.closest('.grade-option')) return;
+  setSheetState('peek');
+}, true);
+
+// Also collapse sheet when a pin popup opens on mobile (so the popup isn't covered)
+map.on('popupopen', () => {
+  if (isMobile() && currentSheetState() !== 'peek') setSheetState('peek');
+});
+
+// Keep map sized correctly on rotation / resize
+window.addEventListener('resize', () => {
+  setTimeout(() => map.invalidateSize(), 100);
 });
 
 renderList();
