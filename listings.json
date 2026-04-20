@@ -32,6 +32,7 @@
   {"id":30, "title":"Jacob van Lennepkade 37-2", "price":3200, "lat":52.365835, "lng":4.875257, "bed":2, "size":"70 m\u00B2", "img":"063794c7-b666-4d26-9b26-2c4816d7558e.jpg", "lid":"a79e2ae9-9677-4466-bbdf-072684dfac83/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":31, "title":"Zeilstraat 24-3", "price":3700, "lat":52.351185, "lng":4.854936, "bed":3, "size":"114 m\u00B2", "img":"4958841c-eea8-4abe-a360-fcf8ee1ff729.jpg", "lid":"16556016-f26c-48c2-923e-0599edd89c04/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":32, "title":"Henri Zagwijnstraat 18-2", "price":3250, "lat":52.341640, "lng":4.868786, "bed":2, "size":"105 m\u00B2", "img":"a76499f6-aa02-495c-80b6-740e351d3bf1.jpg", "lid":"0b56e9d0-d350-4fa5-b315-76e0a6667b2b/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
+  {"id":33, "title":"Wijsmullerstraat 41-H", "price":2750, "lat":52.356196, "lng":4.851984, "bed":2, "size":"85 m\u00B2", "img":"8af99213-d62d-4350-b81d-d218cb4b0dd6.jpg", "lid":"18df745b-ffac-4829-adc9-d78a18a0d760/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":"f1", "title":"PC Hooftstraat 55-2", "price":3500, "lat":52.3586, "lng":4.8791, "bed":2, "size":"92 m\u00B2", "img":"https://cloud.funda.nl/valentina_media/227/086/839.jpg", "url":"https://www.funda.nl/detail/huur/amsterdam/appartement-pieter-cornelisz-hooftstraat-55-2/89767048/", "source":"funda"}
 ],
 "landmarks": [
