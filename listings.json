@@ -36,6 +36,7 @@
   {"id":34, "title":"Rooseveltlaan 232-3", "price":3500, "lat":52.342760, "lng":4.895011, "bed":3, "size":"98 m\u00B2", "img":"e0190828-2eac-43a0-8c58-3744b67b4dcc.jpg", "lid":"c6986af0-c85f-4166-af18-821eb6dca280/17bada35-d55f-4ccf-a9a3-19c08b0a4daf"},
   {"id":35, "title":"Valeriusstraat", "price":3300, "lat":52.354398, "lng":4.870061, "bed":3, "size":"80 m\u00B2", "img":"65a2d591-4fee-4c34-a8bc-7d9736303be3.jpg", "lid":"e81a8a0e-755b-4f42-a43a-225e06c4028d/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":36, "title":"Johannes Verhulststraat 119-2", "price":3150, "lat":52.354042, "lng":4.870960, "bed":2, "size":"85 m\u00B2", "img":"ecc8ce87-fc19-4956-b693-4e059dd103fa.jpg", "lid":"21bc6b86-da29-474e-826f-0eb1b6b344b0/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
+  {"id":37, "title":"Apollolaan 53-2", "price":3250, "lat":52.349879, "lng":4.880695, "bed":3, "size":"114 m\u00B2", "img":"6370d2a6-9163-4953-9399-4ad7a5f5a138.jpg", "lid":"b03cd548-e052-4100-b11f-652458f5c083/6e67968f-ba9f-4158-af27-7e1c292f7ece"},
   {"id":"f1", "title":"PC Hooftstraat 55-2", "price":3500, "lat":52.3586, "lng":4.8791, "bed":2, "size":"92 m\u00B2", "img":"https://cloud.funda.nl/valentina_media/227/086/839.jpg", "url":"https://www.funda.nl/detail/huur/amsterdam/appartement-pieter-cornelisz-hooftstraat-55-2/89767048/", "source":"funda"}
 ],
 "landmarks": [
